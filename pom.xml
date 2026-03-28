@@ -39,30 +39,23 @@
 				<groupId>org.openjfx</groupId>
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>0.0.8</version>
+				<configuration>
+					<mainClass>${mainClass}</mainClass>
+				</configuration>
 				<executions>
 					<execution>
 						<id>default-cli</id>
 						<configuration>
 							<mainClass>${mainClass}</mainClass>
+							<jlinkImageName>${appName}</jlinkImageName>
+							<jlinkZipName>${appName}-linux</jlinkZipName>
+							<launcher>${appName}</launcher>
+							<noHeaderFiles>true</noHeaderFiles>
+							<noManPages>true</noManPages>
+							<stripDebug>true</stripDebug>
 						</configuration>
 					</execution>
 				</executions>
-				<!-- this is for the fat clean javafx:jlink -->
-				<configuration>
-					<mainClass>${mainClass}</mainClass>
-					<jlinkImageName>${appName}</jlinkImageName>
-					<jlinkZipName>${appName}-linux</jlinkZipName>
-					<launcher>${appName}</launcher>
-					<compress>2</compress>
-					<stripDebug>true</stripDebug>
-					<noHeaderFiles>true</noHeaderFiles>
-					<noManPages>true</noManPages>
-					<options>
-						<option>--compress</option>
-						<option>zip</option>
-						<option>--strip-native-commands</option>
-					</options>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
