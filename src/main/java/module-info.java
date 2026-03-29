@@ -1,5 +1,6 @@
 module de.wahl.javafx.top {
     requires javafx.controls;
+	requires jdk.jfr;
     // falls du FXML nutzt, hier einkommentieren:
     // requires javafx.fxml; 
 

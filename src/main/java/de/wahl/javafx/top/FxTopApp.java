@@ -1,10 +1,17 @@
 package de.wahl.javafx.top;
 
+import de.wahl.top.CpuIdle;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -18,20 +25,25 @@ public class FxTopApp extends Application{
 
 		private double xOffset = 0;
 	    private double yOffset = 0;
-	    private int radius = 100;
+	    private int radius = 50;
 
 	    @Override
 	    public void start(Stage primaryStage) {
-	        // 1. Der Kreis
-	        Circle circle = new Circle(radius, Color.CORAL);
-	        //circle.setStroke(Color.BLACK);
-	        //circle.setStrokeWidth(5);
+	    	StringProperty value = new SimpleStringProperty("99");
 
-	        // 2. Container mit fixer Mindestgröße
-	        StackPane root = new StackPane(circle);
+	    	Circle circle = new Circle(radius, Color.CORAL);
+	        
+	        Text percentageText = new Text();
+	        percentageText.textProperty().bind(value);
+	        percentageText.setFont(Font.font("Arial", FontWeight.BOLD, 35)); // Schriftart und Größe
+	        percentageText.setFill(Color.BLACK); // Schriftfarbe
+
+	        StackPane root = new StackPane();
 	        root.setPrefSize(radius*2, radius*2);
 	        // Zum Testen: Ändere TRANSPARENT zu RED, um zu sehen ob das Fenster da ist
 	        root.setStyle("-fx-background-color: transparent;"); 
+	        
+	        root.getChildren().addAll(circle, percentageText);
 
 	        // 3. Drag-and-Drop Logik (damit man es bewegen kann)
 	        root.setOnMousePressed(event -> {
@@ -52,6 +64,15 @@ public class FxTopApp extends Application{
 	        primaryStage.setScene(scene);
 	        primaryStage.setAlwaysOnTop(true);
 	        primaryStage.show();
+	        
+	        Thread thread = new Thread(() -> {
+	        	CpuIdle.watch(idle->{
+		        	Platform.runLater(() -> value.set("" + idle));
+		        });
+	        });
+	        thread.setDaemon(true); // Beendet den Thread, wenn die App schließt
+	        thread.start();
+	        
 	        //primaryStage.requestFocus(); // Erzwinge den Fokus
 	    }
 
