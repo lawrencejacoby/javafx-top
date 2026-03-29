@@ -12,7 +12,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.release>21</maven.compiler.release>
 		<javafx.version>21</javafx.version>
-		<appName>FxTopHelloWorldApp</appName>
+		<appName>FxTopApp</appName>
 		<mainClass>de.wahl.javafx.top.${appName}</mainClass>
 	</properties>
 
