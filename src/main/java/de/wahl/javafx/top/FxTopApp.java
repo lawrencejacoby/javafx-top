@@ -60,7 +60,7 @@ public class FxTopApp extends Application{
 	        scene.setFill(Color.TRANSPARENT); // WICHTIG
 
 	        primaryStage.initStyle(StageStyle.TRANSPARENT); // WICHTIG
-	        primaryStage.setOpacity(0.99);
+	        root.setOpacity(0.2);
 	        primaryStage.setScene(scene);
 	        primaryStage.setAlwaysOnTop(true);
 	        primaryStage.show();
