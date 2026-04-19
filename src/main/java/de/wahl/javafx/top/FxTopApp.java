@@ -5,13 +5,17 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.robot.Robot;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -63,6 +67,9 @@ public class FxTopApp extends Application{
 	        root.setOpacity(0.2);
 	        primaryStage.setScene(scene);
 	        primaryStage.setAlwaysOnTop(true);
+	        
+	        displayOnCurrentScreen(primaryStage);
+	        
 	        primaryStage.show();
 	        
 	        Thread thread = new Thread(() -> {
@@ -75,5 +82,23 @@ public class FxTopApp extends Application{
 	        
 	        //primaryStage.requestFocus(); // Erzwinge den Fokus
 	    }
+
+		private void displayOnCurrentScreen(Stage primaryStage) {
+			Robot robot = new Robot();
+			// 1. Hole alle Bildschirme, auf denen sich der Mauszeiger befindet
+		    ObservableList<Screen> screens = Screen.getScreensForRectangle(
+		    	robot.getMouseX(), robot.getMouseY(), 1, 1
+		    );
+
+		    if (!screens.isEmpty()) {
+		        Screen targetScreen = screens.get(0);
+		        Rectangle2D bounds = targetScreen.getVisualBounds();
+
+		        Scene scene = primaryStage.getScene();
+				// 2. Berechne die Mitte dieses Bildschirms
+		        primaryStage.setX(bounds.getMinX() + (bounds.getWidth() - scene.getWidth()) / 2);
+		        primaryStage.setY(bounds.getMinY() + (bounds.getHeight() - scene.getHeight()) / 2);
+		    }
+		}
 
 }
